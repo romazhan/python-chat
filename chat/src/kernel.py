@@ -23,7 +23,7 @@ class Server(object):
     def process_client(self, client : socket.socket, address : tuple):
         while(self.is_running and client in self.clients):
             host, port = address
-            message = client.recv(1024).decode(self.encoding)
+            message = client.recv(1024).decode(self.encoding).strip()
             if(not self.is_running): break
             elif(not message):
                 message = f' [-] {host}:{port} - disconnected.'
