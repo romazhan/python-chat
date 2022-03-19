@@ -20,7 +20,7 @@ class Server(object):
         for client in self.clients:
             client != sender and client.send(message.encode(self.encoding))
 
-    def process_client(self, client : socket.socket, address : tuple):
+    def client_processing(self, client : socket.socket, address : tuple):
         while(self.is_running and client in self.clients):
             host, port = address
             message = client.recv(1024).decode(self.encoding).strip()
@@ -34,10 +34,10 @@ class Server(object):
                 message = f' [{host}:{port}]: {message}'
                 self.send_to_clients(client, message)
 
-    def register_client(self, client : socket.socket, address : tuple):
+    def client_registration(self, client : socket.socket, address : tuple):
         if(client in self.clients): return
         self.clients.append(client)
-        Thread(target = self.process_client, args = (client, address)).start()
+        Thread(target = self.client_processing, args = (client, address)).start()
         host, port = address
         message = f' [+] {host}:{port} - connected.'
         self.send_to_clients(client, message)
@@ -48,7 +48,7 @@ class Server(object):
             try:
                 client, address = self.socket.accept()
                 if(not self.is_running): break
-                self.register_client(client, address)
+                self.client_registration(client, address)
                 collect()
             except: pass
 
