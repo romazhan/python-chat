@@ -43,7 +43,7 @@ class Server(object):
         self.send_to_clients(client, message)
         print(message)
 
-    def listen_connections(self):
+    def process_connections(self):
         while(self.is_running):
             try:
                 client, address = self.socket.accept()
@@ -52,7 +52,7 @@ class Server(object):
                 collect()
             except: pass
 
-    def listen_commands(self):
+    def process_commands(self):
         while(self.is_running):
             command = input().strip().lower()
             print(f'\x1b[F [{self.host}:{self.port}]: {command}')
@@ -78,8 +78,8 @@ class Server(object):
     def launch(self):
         system('clear')
         self.start_stream()
-        Thread(target = self.listen_connections).start()
-        Thread(target = self.listen_commands).start()
+        Thread(target = self.process_connections).start()
+        Thread(target = self.process_commands).start()
 
 
 class Client(object):
@@ -104,7 +104,7 @@ class Client(object):
             elif(message): print(message)
             collect()
 
-    def listen_input(self):
+    def process_user_input(self):
         while(self.is_running):
             user_input = input().strip()
             if(not self.is_running): break
@@ -125,6 +125,6 @@ class Client(object):
         self.socket.connect((host, port))
         self.socket.setblocking(0)
         Thread(target = self.process_messages).start()
-        Thread(target = self.listen_input).start()
+        Thread(target = self.process_user_input).start()
         print(f' [#] Connected to {host}:{port} ~ \n')
         print(' ~ Enter "/exit" to exit.\n')
