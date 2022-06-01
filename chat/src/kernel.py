@@ -1,5 +1,4 @@
 #-*- coding: utf-8 -*-
-
 import socket
 from os import system
 from threading import Thread

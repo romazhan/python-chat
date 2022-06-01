@@ -1,5 +1,4 @@
 #-*- coding: utf-8 -*-
-
 from src.kernel import Server
 from config import settings
 
