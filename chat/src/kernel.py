@@ -100,7 +100,8 @@ class Client(object):
                 self.exit()
                 print(' ~ Press "enter" to exit.')
                 break
-            elif(message): print(message)
+            elif(message):
+                print(message)
             collect()
 
     def process_user_input(self):
